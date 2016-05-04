@@ -88,6 +88,27 @@ Translated from ace-pinyin, powered by OpenCC.  Thanks to BYVoid.")
 (defvar evil-find-char-pinyin-only-simplified t
   "Whether we only deal with simplified Chinese character or not.")
 
+(defvar evil-find-char-pinyin-enable-punctuation-translation t
+  "Enable punctuation support or not.")
+
+(defvar evil-find-char-pinyin--punctuation-alist
+  '((?. . "[。.]")
+    (?, . "[，,]")
+    (?? . "[？?]")
+    (?: . "[：:]")
+    (?! . "[！!]")
+    (?\; . "[；;]")
+    (?\\ . "[、\\]")
+    (?\( . "[（(]")
+    (?\) . "[）)]")
+    (?\< . "[《<]")
+    (?\> . "[》>]")
+    (?~ . "[～~]")
+    (?\' . "[‘’「」']")
+    (?\" . "[“”『』\"]")
+    (?* . "[×*]")
+    (?$ . "[￥$]")))
+
 (evil-define-motion evil-find-char-pinyin (count char)
   "Move to the next COUNT'th occurrence of CHAR."
   :type inclusive
@@ -103,7 +124,12 @@ Translated from ace-pinyin, powered by OpenCC.  Thanks to BYVoid.")
           (prog1
               (search-forward-regexp
                (if (or (>= diff 26) (< diff 0))
-                   (regexp-quote (char-to-string char))
+                   (or (and evil-find-char-pinyin-enable-punctuation-translation
+                            (assoc-default
+                             char
+                             evil-find-char-pinyin--punctuation-alist))
+                       (regexp-quote (string char)))
+                 (regexp-quote (char-to-string char))
                  (setq regexp
                        (nth diff
                             (if evil-find-char-pinyin-only-simplified
