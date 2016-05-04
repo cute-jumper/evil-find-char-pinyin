@@ -3,6 +3,7 @@
 ;; Copyright (C) 2016  Junpeng Qiu
 
 ;; Author: Junpeng Qiu <qjpchmail@gmail.com>
+;; Package-Requires: ((evil "1.2.12"))
 ;; Keywords: extensions
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -20,6 +21,101 @@
 
 ;;; Commentary:
 
+;; Table of Contents
+;; _________________
+
+;; 1 evil-find-char-pinyin
+;; .. 1.1 Installation
+;; .. 1.2 Usage
+;; .. 1.3 Config
+;; ..... 1.3.1 Enable Traditional Chinese Support
+;; ..... 1.3.2 Disable Punctuaction Support
+
+
+;; 1 evil-find-char-pinyin
+;; =======================
+
+;;   Evil's f/F/t/T commands with Pinyin support.
+
+
+;; 1.1 Installation
+;; ~~~~~~~~~~~~~~~~
+
+;;   ,----
+;;   | (add-to-list 'load-path "/path/to/evil-find-char-pinyin.el")
+;;   | (require 'evil-find-char-pinyin)
+;;   `----
+
+
+;; 1.2 Usage
+;; ~~~~~~~~~
+
+;;   To enable the mode:
+;;   ,----
+;;   | (evil-find-char-pinyin-mode +1)
+;;   `----
+
+;;   After you enable the mode, `evil''s f/F/t/T commands are able to jump
+;;   to Chinese characters by their Pinyin.
+
+;;   For example (`|' is the location of the cursor):
+;;   ,----
+;;   | |我能吞下玻璃而不伤身体。
+;;   `----
+
+;;   `dft' will delete `我能吞' 。
+
+;;   It also supports Chinese punctuactions:
+;;   ,----
+;;   | |我能吞下玻璃而不伤身体。
+;;   `----
+
+;;   `dt.' will delete up to `。'.
+
+;;   Here is the full list of punctuation mappings:
+;;    English Punctuation  Chinese & English Punctuations
+;;   -----------------------------------------------------
+;;    .                    。.
+;;    ,                    ，,
+;;    ?                    ？?
+;;    :                    ：:
+;;    !                    ！!
+;;    ;                    ；;
+;;    \\                   、\\
+;;    (                    （(
+;;    )                    ）)
+;;    <                    《<
+;;    >                    》>
+;;    ~                    ～~
+;;    '                    ‘’「」'
+;;    "                    “”『』\"
+;;    *                    ×*
+;;    $                    ￥$
+
+;;   The English punctuaction keys in the first column can be used to find
+;;   the Chinese & English punctuactions in the second column.
+
+
+;; 1.3 Config
+;; ~~~~~~~~~~
+
+;; 1.3.1 Enable Traditional Chinese Support
+;; ----------------------------------------
+
+;;   By default, only Simplifed Chinese charaters are supported. To enable
+;;   Traditional Chinese support:
+;;   ,----
+;;   | (setq evil-find-char-pinyin-only-simplified nil)
+;;   `----
+
+
+;; 1.3.2 Disable Punctuaction Support
+;; ----------------------------------
+
+;;   If you don't want the punctuation support, use:
+;;   ,----
+;;   | (setq evil-find-char-pinyin-enable-punctuation-translation nil)
+;;   `----
 ;;
 
 ;;; Code:
