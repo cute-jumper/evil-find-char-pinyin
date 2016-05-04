@@ -64,7 +64,7 @@
 ;;   | |我能吞下玻璃而不伤身体。
 ;;   `----
 
-;;   `dft' will delete `我能吞' 。
+;;   `dft' will delete `我能吞' .
 
 ;;   It also supports Chinese punctuactions:
 ;;   ,----
