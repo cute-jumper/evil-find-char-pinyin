@@ -214,7 +214,6 @@ Translated from ace-pinyin, powered by OpenCC.  Thanks to BYVoid.")
                   char
                   evil-find-char-pinyin--punctuation-alist))
             (regexp-quote (string char)))
-      (regexp-quote (char-to-string char))
       (setq regexp
             (nth diff
                  (if evil-find-char-pinyin-only-simplified
