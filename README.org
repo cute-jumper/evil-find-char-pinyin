@@ -54,3 +54,7 @@
 *** Disable Punctuaction Support
     If you don't want the punctuation support, use:
     : (setq evil-find-char-pinyin-enable-punctuation-translation nil)
+** Related Packages
+   - [[https://github.com/cute-jumper/ace-pinyin][ace-pinyin]]
+   - [[https://github.com/redguardtoo/find-by-pinyin-dired][find-by-pinyin-dired]]
+   - [[https://github.com/xuchunyang/pinyin-search.el][pinyin-search]]
