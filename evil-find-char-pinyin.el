@@ -205,35 +205,38 @@ Translated from ace-pinyin, powered by OpenCC.  Thanks to BYVoid.")
     (?* . "[×*]")
     (?$ . "[￥$]")))
 
+(defun evil-find-char-pinyin--build-regexp (char)
+  (let ((diff (- char ?a))
+        regexp)
+    (if (or (>= diff 26) (< diff 0))
+        (or (and evil-find-char-pinyin-enable-punctuation-translation
+                 (assoc-default
+                  char
+                  evil-find-char-pinyin--punctuation-alist))
+            (regexp-quote (string char)))
+      (regexp-quote (char-to-string char))
+      (setq regexp
+            (nth diff
+                 (if evil-find-char-pinyin-only-simplified
+                     evil-find-char-pinyin--simplified-char-table
+                   evil-find-char-pinyin--traditional-char-table)))
+      (concat (format "[%c]" char)
+              (unless (string= regexp "") "\\|")
+              regexp))))
+
 (evil-define-motion evil-find-char-pinyin (count char)
   "Move to the next COUNT'th occurrence of CHAR."
   :type inclusive
   (interactive "<c><C>")
   (setq count (or count 1))
-  (let ((fwd (> count 0))
-        (diff (- char ?a))
-        regexp)
+  (let ((fwd (> count 0)))
     (setq evil-last-find (list #'evil-find-char-pinyin char fwd))
     (when fwd (forward-char))
     (let ((case-fold-search nil))
       (unless
           (prog1
               (search-forward-regexp
-               (if (or (>= diff 26) (< diff 0))
-                   (or (and evil-find-char-pinyin-enable-punctuation-translation
-                            (assoc-default
-                             char
-                             evil-find-char-pinyin--punctuation-alist))
-                       (regexp-quote (string char)))
-                 (regexp-quote (char-to-string char))
-                 (setq regexp
-                       (nth diff
-                            (if evil-find-char-pinyin-only-simplified
-                                evil-find-char-pinyin--simplified-char-table
-                              evil-find-char-pinyin--traditional-char-table)))
-                 (concat (format "[%c]" char)
-                         (unless (string= regexp "") "\\|")
-                         regexp))
+               (evil-find-char-pinyin--build-regexp char)
                (unless evil-cross-lines
                  (if fwd
                      (line-end-position)
@@ -266,6 +269,42 @@ Translated from ace-pinyin, powered by OpenCC.  Thanks to BYVoid.")
   (interactive "<c><C>")
   (evil-find-char-pinyin-to (- (or count 1)) char))
 
+(evil-define-motion evil-repeat-find-char-pinyin (count)
+  "Repeat the last find COUNT times."
+  :type inclusive
+  (setq count (or count 1))
+  (if evil-last-find
+      (let ((cmd (car evil-last-find))
+            (char (nth 1 evil-last-find))
+            (fwd (nth 2 evil-last-find))
+            evil-last-find)
+        ;; ensure count is non-negative
+        (when (< count 0)
+          (setq count (- count)
+                fwd (not fwd)))
+        ;; skip next character when repeating t or T
+        (and (eq cmd #'evil-find-char-pinyin-to)
+             evil-repeat-find-to-skip-next
+             (= count 1)
+             (or (and fwd (or (= (char-after (1+ (point))) char)
+                              (string-match-p
+                               (evil-find-char-pinyin--build-regexp char)
+                               (string (char-after (1+ (point)))))))
+                 (and (not fwd) (or (= (char-before) char)
+                                    (string-match-p
+                                     (evil-find-char-pinyin--build-regexp char)
+                                     (string (char-before))))))
+             (setq count (1+ count)))
+        (funcall cmd (if fwd count (- count)) char)
+        (unless (nth 2 evil-last-find)
+          (setq evil-this-type 'exclusive)))
+    (user-error "No previous search")))
+
+(evil-define-motion evil-repeat-find-char-pinyin-reverse (count)
+  "Repeat the last find COUNT times in the opposite direction."
+  :type inclusive
+  (evil-repeat-find-char-pinyin (- (or count 1))))
+
 ;;;###autoload
 (define-minor-mode evil-find-char-pinyin-mode
   "Minor mode to make Evil's f/F/t/T be able to find Chinese characters."
@@ -280,11 +319,19 @@ Translated from ace-pinyin, powered by OpenCC.  Thanks to BYVoid.")
         (define-key evil-motion-state-map
           [remap evil-find-char-to] 'evil-find-char-pinyin-to)
         (define-key evil-motion-state-map
-          [remap evil-find-char-to-backward] 'evil-find-char-pinyin-to-backward))
+          [remap evil-find-char-to-backward] 'evil-find-char-pinyin-to-backward)
+        (define-key evil-motion-state-map
+          [remap evil-find-char-to-backward] 'evil-find-char-pinyin-to-backward)
+        (define-key evil-motion-state-map
+          [remap evil-repeat-find-char] 'evil-repeat-find-char-pinyin)
+        (define-key evil-motion-state-map
+          [remap evil-repeat-find-char-reverse] 'evil-repeat-find-char-pinyin-reverse))
     (define-key evil-motion-state-map [remap evil-find-char] nil)
     (define-key evil-motion-state-map [remap evil-find-char-backward] nil)
     (define-key evil-motion-state-map [remap evil-find-char-to] nil)
-    (define-key evil-motion-state-map [remap evil-find-char-to-backward] nil)))
+    (define-key evil-motion-state-map [remap evil-find-char-to-backward] nil)
+    (define-key evil-motion-state-map [remap evil-repeat-find-char] nil)
+    (define-key evil-motion-state-map [remap evil-repeat-find-char-reverse] nil)))
 
 (provide 'evil-find-char-pinyin)
 ;;; evil-find-char-pinyin.el ends here
