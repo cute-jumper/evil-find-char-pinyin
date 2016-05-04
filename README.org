@@ -10,7 +10,8 @@
    : (evil-find-char-pinyin-mode +1)
 
    After you enable the mode, =evil='s f/F/t/T commands are able to jump to
-   Chinese characters by their Pinyin.
+   Chinese characters by their Pinyin. You can also use =;= and =,= to repeat
+   the last f/F/t/T command.
 
    For example (=|= is the location of the cursor):
    : |我能吞下玻璃而不伤身体。

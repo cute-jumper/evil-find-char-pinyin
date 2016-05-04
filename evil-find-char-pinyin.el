@@ -56,7 +56,8 @@
 ;;   `----
 
 ;;   After you enable the mode, `evil''s f/F/t/T commands are able to jump
-;;   to Chinese characters by their Pinyin.
+;;   to Chinese characters by their Pinyin. You can also use `;' and `,' to
+;;   repeat the last f/F/t/T command.
 
 ;;   For example (`|' is the location of the cursor):
 ;;   ,----
