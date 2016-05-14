@@ -1,6 +1,8 @@
 #+TITLE: evil-find-char-pinyin
 Evil's f/F/t/T commands with Pinyin support.
 
+让 Evil 的 f/F/t/T 命令支持拼音首字母搜索。
+
 * Installation
   Recommendation: Install from [[http://melpa.org][melpa]].
 
