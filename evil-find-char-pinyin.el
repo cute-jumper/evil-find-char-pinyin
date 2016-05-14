@@ -301,7 +301,11 @@
   (let ((regex-p (assoc key evil-snipe-aliases))
         (keystr (char-to-string key)))
     (cons keystr
-          (if regex-p (elt regex-p 1) (pinyinlib-build-regexp-string keystr)))))
+          (if regex-p (elt regex-p 1)
+            (pinyinlib-build-regexp-string
+             keystr
+             (not evil-find-char-pinyin-enable-punctuation-translation)
+             (not evil-find-char-pinyin-only-simplified))))))
 
 ;;;###autoload
 (defun evil-find-char-pinyin-toggle-snipe-integration (toggle)
