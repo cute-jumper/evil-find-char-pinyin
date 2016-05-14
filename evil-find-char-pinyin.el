@@ -262,5 +262,29 @@
     (define-key evil-motion-state-map [remap evil-repeat-find-char] nil)
     (define-key evil-motion-state-map [remap evil-repeat-find-char-reverse] nil)))
 
+
+;; ---------------------- ;;
+;; evil-snipe integration ;;
+;; ---------------------- ;;
+(defvar evil-find-char-pinyin--snipe-def nil)
+(defun evil-find-char-pinyin--process-key (key)
+  (let ((regex-p (assoc key evil-snipe-aliases))
+        (keystr (char-to-string key)))
+    (cons keystr
+          (if regex-p (elt regex-p 1) (pinyinlib-build-regexp-string keystr)))))
+
+;;;###autoload
+(defun evil-find-char-pinyin-toggle-snipe-integration (toggle)
+  (if toggle
+      (if (require 'evil-snipe nil t)
+          (progn
+            (unless evil-find-char-pinyin--snipe-def
+              (setq evil-find-char-pinyin--snipe-def
+                    (symbol-function 'evil-snipe--process-key)))
+            (fset 'evil-snipe--process-key 'evil-find-char-pinyin--process-key))
+        (error "`evil-snipe' is not available"))
+    (when evil-find-char-pinyin--snipe-def
+      (fset 'evil-snipe--process-key evil-find-char-pinyin--snipe-def))))
+
 (provide 'evil-find-char-pinyin)
 ;;; evil-find-char-pinyin.el ends here
