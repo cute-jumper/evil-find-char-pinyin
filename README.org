@@ -1,7 +1,8 @@
 #+TITLE: evil-find-char-pinyin
-Evil's f/F/t/T commands with Pinyin support.
+Evil's f/F/t/T commands with Pinyin support, with optional [[https://github.com/hlissner/evil-snipe][evil-snipe]]
+integration.
 
-让 Evil 的 f/F/t/T 命令支持拼音首字母搜索。
+让 Evil 的 f/F/t/T 命令支持拼音首字母搜索。 可选的对 [[https://github.com/hlissner/evil-snipe][evil-snipe]] 的支持。
 
 * Installation
   Recommendation: Install from [[http://melpa.org][melpa]].
@@ -33,6 +34,21 @@ Evil's f/F/t/T commands with Pinyin support.
   punctuations. To see the full list of Chinese punctuations that are supported,
   look at [[https://github.com/cute-jumper/pinyinlib.el][pinyinlib.el]].
 
+* Optional =evil-snipe= Integration
+  If you're using [[https://github.com/hlissner/evil-snipe][evil-snipe]] for 2-char searching in evil, you can enable
+  =evil-snipe= integration:
+  : (evil-find-char-pinyin-toggle-snipe-integration t)
+
+  Use =nil= as the parameter to disable the integration.
+
+  After enabling this feature, all of =evil-snipe='s commands:
+  - =evil-snipe-repeat= and =evil-snipe-repeat-reverse=
+  - =evil-snipe-s= and =evil-snipe-S=
+  - =evil-snipe-x= and =evil-snipe-X=
+  - =evil-snipe-f= and =evil-snipe-F=
+  - =evil-snipe-t= and =evil-snipe-T=
+  are able to search Chinese characters by letters.
+
 * Config
 ** Enable Traditional Chinese Support
    By default, only Simplifed Chinese charaters are supported. To enable
@@ -42,6 +58,7 @@ Evil's f/F/t/T commands with Pinyin support.
 ** Disable Punctuaction Support
    If you don't want the punctuation support, use:
    : (setq evil-find-char-pinyin-enable-punctuation-translation nil)
+
 * Related Packages
   - [[https://github.com/cute-jumper/pinyinlib.el][pinyinlib.el]]
   - [[https://github.com/cute-jumper/ace-pinyin][ace-pinyin]]

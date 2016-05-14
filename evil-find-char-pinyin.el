@@ -1,4 +1,4 @@
-;;; evil-find-char-pinyin.el --- Evil's f/F/t/T commands with Pinyin support  -*- lexical-binding: t; -*-
+;;; evil-find-char-pinyin.el --- Evil's f/F/t/T/evil-snipe commands with Pinyin support  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2016  Junpeng Qiu
 
@@ -34,13 +34,20 @@
 
 ;; 1 Installation
 ;; 2 Usage
-;; 3 Config
-;; .. 3.1 Enable Traditional Chinese Support
-;; .. 3.2 Disable Punctuaction Support
-;; 4 Related Packages
+;; 3 Optional `evil-snipe' Integration
+;; 4 Config
+;; .. 4.1 Enable Traditional Chinese Support
+;; .. 4.2 Disable Punctuaction Support
+;; 5 Related Packages
 
 
-;; Evil's f/F/t/T commands with Pinyin support.
+;; Evil's f/F/t/T commands with Pinyin support, with optional [evil-snipe]
+;; integration.
+
+;; 让 Evil 的 f/F/t/T 命令支持拼音首字母搜索。 可选的对 [evil-snipe] 的支持。
+
+
+;; [evil-snipe] https://github.com/hlissner/evil-snipe
 
 
 ;; 1 Installation
@@ -93,10 +100,33 @@
 ;; [pinyinlib.el] https://github.com/cute-jumper/pinyinlib.el
 
 
-;; 3 Config
+;; 3 Optional `evil-snipe' Integration
+;; ===================================
+
+;;   If you're using [evil-snipe] for 2-char searching in evil, you can
+;;   enable `evil-snipe' integration:
+;;   ,----
+;;   | (evil-find-char-pinyin-toggle-snipe-integration t)
+;;   `----
+
+;;   Use `nil' as the parameter to disable the integration.
+
+;;   After enabling this feature, all of `evil-snipe''s commands:
+;;   - `evil-snipe-repeat' and `evil-snipe-repeat-reverse'
+;;   - `evil-snipe-s' and `evil-snipe-S'
+;;   - `evil-snipe-x' and `evil-snipe-X'
+;;   - `evil-snipe-f' and `evil-snipe-F'
+;;   - `evil-snipe-t' and `evil-snipe-T'
+;;   are able to search Chinese characters by letters.
+
+
+;; [evil-snipe] https://github.com/hlissner/evil-snipe
+
+
+;; 4 Config
 ;; ========
 
-;; 3.1 Enable Traditional Chinese Support
+;; 4.1 Enable Traditional Chinese Support
 ;; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;;   By default, only Simplifed Chinese charaters are supported. To enable
@@ -106,7 +136,7 @@
 ;;   `----
 
 
-;; 3.2 Disable Punctuaction Support
+;; 4.2 Disable Punctuaction Support
 ;; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;;   If you don't want the punctuation support, use:
@@ -115,7 +145,7 @@
 ;;   `----
 
 
-;; 4 Related Packages
+;; 5 Related Packages
 ;; ==================
 
 ;;   - [pinyinlib.el]
